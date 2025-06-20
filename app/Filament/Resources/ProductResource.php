@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
+
 
 class ProductResource extends Resource
 {
@@ -64,6 +66,27 @@ class ProductResource extends Resource
 
     // Rol yetkilendirmesi
     public static function canViewAny(): bool
+    {
+        return auth()->user()?->hasRole(['admin', 'satis']);
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return auth()->user()?->hasRole(['admin', 'satis']);
+    }
+    
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->hasRole('admin');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()?->hasRole('admin');
+    }
+
+    public static function canDelete(Model $record): bool
     {
         return auth()->user()?->hasRole('admin');
     }
